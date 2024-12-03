@@ -32,7 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 IconButton(
                   icon: Icon(Icons.arrow_back),
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/welcome');
+                  },
                 ),
                 SizedBox(height: 20),
                 Center(
