@@ -10,10 +10,8 @@ class RoleAndPermissionSeeder extends Seeder
 {
     public function run(): void
     {
-        // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create permissions
         $permissions = [
             'view users',
             'create users',
@@ -28,17 +26,21 @@ class RoleAndPermissionSeeder extends Seeder
             'manage master data',
         ];
 
-        // Create permissions
         foreach ($permissions as $permission) {
             Permission::create(['name' => $permission]);
         }
 
-        // Create admin role first
-        $adminRole = Role::create(['name' => 'admin', 'guard_name' => 'web']);
+        // Create roles
+        $roles = ['admin', 'user', 'operator'];
+        foreach ($roles as $role) {
+            Role::create(['name' => $role]);
+        }
+
+        // Assign permissions
+        $adminRole = Role::findByName('admin');
         $adminRole->givePermissionTo(Permission::all());
 
-        // Create operator role
-        $operatorRole = Role::create(['name' => 'operator', 'guard_name' => 'web']);
+        $operatorRole = Role::findByName('operator');
         $operatorRole->givePermissionTo([
             'view reports',
             'create reports',

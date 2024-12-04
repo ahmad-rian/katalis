@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:katalis/views/home_screen.dart';
 import 'package:katalis/views/login/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -178,7 +179,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   TextButton(
                     onPressed: () => Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => HomeScreen()),
                     ),
                     child: Text(
                       'Skip',
