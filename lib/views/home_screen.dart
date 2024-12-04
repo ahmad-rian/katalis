@@ -14,24 +14,61 @@ class _HomeScreenState extends State<HomeScreen> {
   final Color primaryBlue = Color(0xFF0D47A1);
   final Color secondaryBlue = Color(0xFF1976D2);
 
+<<<<<<< HEAD
   final List<Widget> _widgetOptions = [
+=======
+  static List<String> _appBarTitles = [
+    'Beranda',
+    'Pencarian NIM',
+    'Pengumuman',
+    'Profil',
+  ];
+
+  static List<Widget> _widgetOptions = <Widget>[
+>>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
     HomePage(),
     NimFinderScreen(),
     AnnouncementPage(),
     ProfilePage(),
   ];
 
+<<<<<<< HEAD
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
+=======
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+>>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [primaryBlue, secondaryBlue],
+=======
+      appBar: AppBar(
+        title: Text(
+          _appBarTitles[_selectedIndex],
+          style: TextStyle(
+            color: Colors.white, // Warna huruf putih
+            fontWeight: FontWeight.bold, // (Opsional) Menambahkan efek tebal
+          ),
+        ),
+        backgroundColor: Colors.blue[800],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications_none, color: Colors.white),
+            onPressed: () {
+              // Implementasi tombol notifikasi
+            },
+>>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
           ),
         ),
         child: SafeArea(
@@ -61,6 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+<<<<<<< HEAD
       bottomNavigationBar: _buildBottomNavigationBar(),
     );
   }
@@ -103,6 +141,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ],
+=======
+      body: _widgetOptions[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue[800],
+        unselectedItemColor: Colors.grey,
+        elevation: 5,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Pencarian NIM',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            label: 'Pengumuman',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profil',
+>>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
           ),
         ],
       ),
