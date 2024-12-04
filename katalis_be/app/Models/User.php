@@ -15,11 +15,15 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'avatar',
+        'role'
     ];
 
     protected $hidden = [
         'password',
         'remember_token',
+        'google_id'
     ];
 
     protected $casts = [
@@ -27,13 +31,31 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function isAdmin()
+    protected static function boot()
     {
-        return $this->role === 'admin';
+        parent::boot();
+
+        static::created(function ($user) {
+            if (!$user->hasRole('admin')) {
+                $user->assignRole('user');
+            }
+        });
     }
 
-    public function isOperator()
+    public function isAdmin()
     {
-        return $this->role === 'operator';
+        return $this->hasRole('admin');
+    }
+
+    public function isUser()
+    {
+        return $this->hasRole('user');
+    }
+
+    public function scopeWithRole($query, $role)
+    {
+        return $query->whereHas('roles', function ($q) use ($role) {
+            $q->where('name', $role);
+        });
     }
 }

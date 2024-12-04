@@ -10,20 +10,26 @@ class AdminSeeder extends Seeder
 {
     public function run(): void
     {
-        // Create admin user
-        $admin = User::create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-            'password' => Hash::make('password123')
-        ]);
-        $admin->assignRole('admin');
+        $users = [
+            [
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+                'role' => 'admin'
+            ],
+            [
+                'name' => 'Operator',
+                'email' => 'operator@example.com',
+                'role' => 'operator'
+            ]
+        ];
 
-        // Create operator user
-        $operator = User::create([
-            'name' => 'Operator',
-            'email' => 'operator@example.com',
-            'password' => Hash::make('password123')
-        ]);
-        $operator->assignRole('operator');
+        foreach ($users as $userData) {
+            $user = User::create([
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+                'password' => Hash::make('password123')
+            ]);
+            $user->assignRole($userData['role']);
+        }
     }
 }
