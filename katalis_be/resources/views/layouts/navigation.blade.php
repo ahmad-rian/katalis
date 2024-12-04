@@ -22,7 +22,7 @@
             </a>
 
             <!-- Members Management Link -->
-            <a href="{{ route('members.view') }}"
+            <a href="{{ route('members.index') }}"
                 class="nav-link group {{ request()->routeIs('members.*') ? 'nav-link-active' : 'nav-link-inactive' }}">
                 <svg class="nav-icon {{ request()->routeIs('members.*') ? 'nav-icon-active' : 'nav-icon-inactive group-hover:text-gray-500' }}"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor">

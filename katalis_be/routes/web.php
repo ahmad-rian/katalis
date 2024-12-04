@@ -33,7 +33,6 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::resource('members', MemberController::class);
-        Route::get('members', [MemberController::class, 'view'])->name('members.view');
     });
 });
 

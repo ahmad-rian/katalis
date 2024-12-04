@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:katalis/models/member_model.dart';
-
+import '../models/member_model.dart';
 import '../services/member_service.dart';
 
 class MemberController extends GetxController {
@@ -23,8 +22,16 @@ class MemberController extends GetxController {
       isLoading(true);
       errorMessage('');
       members.value = await memberService.getAllMembers();
+      print('Members fetched: ${members.length}');
     } catch (e) {
-      errorMessage('Failed to fetch members: $e');
+      print('Error fetching members: $e');
+      errorMessage(e.toString());
+      // Check if error is due to unauthorized access
+      if (e.toString().contains('Unauthorized') ||
+          e.toString().contains('401')) {
+        print('Unauthorized access detected, redirecting to login');
+        await Get.offAllNamed('/login');
+      }
     } finally {
       isLoading(false);
     }
@@ -38,8 +45,15 @@ class MemberController extends GetxController {
       isLoading(true);
       errorMessage('');
       members.value = await memberService.searchMembers(query);
+      print('Search results: ${members.length}');
     } catch (e) {
-      errorMessage('Failed to search members: $e');
+      print('Error searching members: $e');
+      errorMessage(e.toString());
+      if (e.toString().contains('Unauthorized') ||
+          e.toString().contains('401')) {
+        print('Unauthorized access detected, redirecting to login');
+        await Get.offAllNamed('/login');
+      }
     } finally {
       isLoading(false);
     }
