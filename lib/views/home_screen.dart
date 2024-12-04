@@ -14,67 +14,72 @@ class _HomeScreenState extends State<HomeScreen> {
   final Color primaryBlue = Color(0xFF0D47A1);
   final Color secondaryBlue = Color(0xFF1976D2);
 
-<<<<<<< HEAD
   final List<Widget> _widgetOptions = [
-=======
-  static List<String> _appBarTitles = [
-    'Beranda',
-    'Pencarian NIM',
-    'Pengumuman',
-    'Profil',
-  ];
-
-  static List<Widget> _widgetOptions = <Widget>[
->>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
     HomePage(),
     NimFinderScreen(),
     AnnouncementPage(),
     ProfilePage(),
   ];
 
-<<<<<<< HEAD
   void _onItemTapped(int index) => setState(() => _selectedIndex = index);
-=======
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
->>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-<<<<<<< HEAD
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [primaryBlue, secondaryBlue],
-=======
-      appBar: AppBar(
-        title: Text(
-          _appBarTitles[_selectedIndex],
-          style: TextStyle(
-            color: Colors.white, // Warna huruf putih
-            fontWeight: FontWeight.bold, // (Opsional) Menambahkan efek tebal
-          ),
-        ),
-        backgroundColor: Colors.blue[800],
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications_none, color: Colors.white),
-            onPressed: () {
-              // Implementasi tombol notifikasi
-            },
->>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
           ),
         ),
         child: SafeArea(
           child: Column(
             children: [
-              _buildAppBar(),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'KATALIS',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 1.5,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.notifications_none,
+                            color: Colors.white,
+                            size: 20,
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          child: Image.asset(
+                            'assets/images/hmif.png',
+                            width: 20,
+                            height: 20,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.only(top: 16),
@@ -98,78 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-<<<<<<< HEAD
       bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-
-  Widget _buildAppBar() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            'KATALIS',
-            style: TextStyle(
-              fontSize: 24,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              letterSpacing: 2,
-            ),
-          ),
-          Row(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: IconButton(
-                  icon: Icon(Icons.notifications_none, color: Colors.white),
-                  onPressed: () {},
-                ),
-              ),
-              SizedBox(width: 12),
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: Colors.white.withOpacity(0.2),
-                child: Image.asset(
-                  'assets/images/hmif.png',
-                  width: 24,
-                  height: 24,
-                ),
-              ),
-            ],
-=======
-      body: _widgetOptions[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        backgroundColor: Colors.white,
-        selectedItemColor: Colors.blue[800],
-        unselectedItemColor: Colors.grey,
-        elevation: 5,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Pencarian NIM',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Pengumuman',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
->>>>>>> 621571ff22df7e2ba87a3fca7f5a80b3d9a55b5e
-          ),
-        ],
-      ),
     );
   }
 
@@ -215,14 +149,14 @@ class _HomeScreenState extends State<HomeScreen> {
             Icon(
               icon,
               color: isSelected ? Colors.white : Colors.grey[300],
-              size: 24,
+              size: 20,
             ),
             SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
                 color: isSelected ? Colors.white : Colors.grey[300],
-                fontSize: 12,
+                fontSize: 10,
                 fontWeight: FontWeight.w500,
               ),
             ),

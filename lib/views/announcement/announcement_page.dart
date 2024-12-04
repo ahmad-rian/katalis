@@ -6,33 +6,36 @@ class AnnouncementPage extends StatefulWidget {
 }
 
 class _AnnouncementPageState extends State<AnnouncementPage> {
-  int selectedCategory = 0; // 0 untuk Street, 1 untuk Natural
+  int selectedCategory = 0;
 
-  // Dummy data
   final streetData = [
-    {'title': 'Lokasi Street 1', 'subtitle': 'Deskripsi Lokasi 1'},
-    {'title': 'Lokasi Street 2', 'subtitle': 'Deskripsi Lokasi 2'},
-    {'title': 'Lokasi Street 3', 'subtitle': 'Deskripsi Lokasi 3'},
+    {'title': 'Street Location 1', 'subtitle': 'Location 1 Description'},
+    {'title': 'Street Location 2', 'subtitle': 'Location 2 Description'},
+    {'title': 'Street Location 3', 'subtitle': 'Location 3 Description'},
   ];
 
   final naturalData = [
-    {'title': 'Lokasi Natural 1', 'subtitle': 'Deskripsi Lokasi 1'},
-    {'title': 'Lokasi Natural 2', 'subtitle': 'Deskripsi Lokasi 2'},
-    {'title': 'Lokasi Natural 3', 'subtitle': 'Deskripsi Lokasi 3'},
+    {'title': 'Natural Location 1', 'subtitle': 'Location 1 Description'},
+    {'title': 'Natural Location 2', 'subtitle': 'Location 2 Description'},
+    {'title': 'Natural Location 3', 'subtitle': 'Location 3 Description'},
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Announcements', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.blue[800],
+      ),
       body: Column(
         children: [
           // Custom Tab Bar
           Container(
-            height: 80,
+            height: 60,
             child: Stack(
               children: [
                 CustomPaint(
-                  size: Size(MediaQuery.of(context).size.width, 80),
+                  size: Size(MediaQuery.of(context).size.width, 60),
                   painter: TabBarPainter(),
                 ),
                 Row(
@@ -45,7 +48,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
               ],
             ),
           ),
-          // List data berdasarkan kategori
+          // List data based on category
           Expanded(
             child: ListView.builder(
               itemCount: selectedCategory == 0
@@ -63,7 +66,6 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     subtitle: Text(item['subtitle'] ?? ''),
                     trailing: Icon(Icons.arrow_forward),
                     onTap: () {
-                      // Implementasikan aksi saat item dipilih
                       print('${item['title']} selected');
                     },
                   ),
