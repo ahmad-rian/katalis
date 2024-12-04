@@ -1,195 +1,104 @@
 import 'package:flutter/material.dart';
-import '../../widgets/custom_button.dart';
 
-class LoginScreen extends StatefulWidget {
-  @override
-  _LoginScreenState createState() => _LoginScreenState();
-}
-
-class _LoginScreenState extends State<LoginScreen> {
-  bool _obscureText = true;
-
+class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              Colors.white,
-              Color(0xFFE3F2FD),
-              Color(0xFFBBDEFB),
+              Color(0xFF1A237E),
+              Color(0xFF303F9F),
+              Color(0xFF3949AB),
             ],
           ),
         ),
         child: SafeArea(
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                IconButton(
-                  icon: Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/welcome');
-                  },
-                ),
-                SizedBox(height: 20),
-                Center(
-                  child: Text(
-                    'Login',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
+          child: Column(
+            children: [
+              Padding(
+                padding: EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/welcome'),
                     ),
-                  ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          blurRadius: 10,
-                        )
-                      ]),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Text(
-                          'KATALIS',
-                          style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue[800],
-                          ),
-                        ),
+              ),
+              Expanded(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/hmif.png',
+                      width: 120,
+                      height: 120,
+                    ),
+                    SizedBox(height: 24),
+                    Text(
+                      'KATALIS',
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 2,
                       ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Username',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
+                    ),
+                    SizedBox(height: 12),
+                    Text(
+                      'HMIF Super Apps',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white70,
+                        letterSpacing: 1,
                       ),
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Enter your username',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
+                    ),
+                    SizedBox(height: 48),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Implement Google Sign In
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 24, vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16),
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey[300]!),
-                          ),
+                          elevation: 4,
                         ),
-                      ),
-                      SizedBox(height: 20),
-                      Text(
-                        'Password',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                      TextField(
-                        obscureText: _obscureText,
-                        decoration: InputDecoration(
-                          hintText: 'Enter your password',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide: BorderSide(color: Colors.grey[300]!),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              color: Colors.grey,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Image.asset(
+                              'assets/images/google.png',
+                              height: 24,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          child: Text(
-                            'Get Now',
-                            style: TextStyle(
-                              color: Colors.blue[600],
-                            ),
-                          ),
-                          onPressed: () {},
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      CustomButton(
-                        text: 'Sign Up',
-                        onPressed: () {},
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Or Sign Up with'),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Container(
-                        width: double.infinity,
-                        height: 50,
-                        child: OutlinedButton.icon(
-                          icon: Image.asset(
-                            'assets/images/google.png',
-                            height: 24,
-                          ),
-                          label: Text('Google'),
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('Already have account? '),
-                          TextButton(
-                            child: Text(
-                              'Sign In',
+                            SizedBox(width: 12),
+                            Text(
+                              'Sign in with Google',
                               style: TextStyle(
-                                color: Colors.blue[600],
+                                fontSize: 16,
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
-                            onPressed: () {},
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:katalis/views/login/login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -12,39 +13,34 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   final List<Map<String, String>> onboardingData = [
     {
       'image': 'assets/images/background1.jpg',
-      'title': 'Semangat motivasi',
-      'subtitle':
-          'Bagikan kata-kata motivasi dan inspirasi yang dapat memberi semangat bagi semua.',
+      'title': 'Welcome to HMIF Super Apps',
+      'subtitle': 'Your one-stop solution for HMIF community needs',
     },
     {
       'image': 'assets/images/background2.jpg',
-      'title': 'Cari nim',
-      'subtitle':
-          'Pengguna dapat dengan mudah mencari data atau informasi terkait dengan NIM (Nomor Induk Mahasiswa) melalui fitur pencarian di aplikasi.',
+      'title': 'Student Data Search',
+      'subtitle': 'Easily search student data and information using NIM',
     },
     {
       'image': 'assets/images/background3.jpg',
-      'title': 'Data real-time',
-      'subtitle':
-          'Data dalam aplikasi selalu diperbarui secara real-time, memastikan bahwa pengguna selalu mendapatkan informasi terkini dan akurat.',
+      'title': 'Real-time Updates',
+      'subtitle': 'Stay connected with latest updates and community features',
     },
   ];
 
   void _onPageChanged(int index) {
-    setState(() {
-      _currentPage = index;
-    });
+    setState(() => _currentPage = index);
   }
 
   void _goToNextPage() {
     if (_currentPage < onboardingData.length - 1) {
       _pageController.nextPage(
         duration: Duration(milliseconds: 300),
-        curve: Curves.ease,
+        curve: Curves.easeOutCubic,
       );
     } else {
-      Navigator.pushReplacementNamed(
-          context, '/login'); // Navigasi ke halaman utama
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginScreen()));
     }
   }
 
@@ -60,36 +56,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             itemBuilder: (context, index) {
               return Stack(
                 children: [
-                  // Background Image
                   Positioned.fill(
                     child: Image.asset(
                       onboardingData[index]['image']!,
                       fit: BoxFit.cover,
                     ),
                   ),
-                  // Overlay untuk membuat background lebih gelap
-                  Positioned.fill(
-                    child: Container(color: Colors.black.withOpacity(0.5)),
+                  Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.black.withOpacity(0.3),
+                          Colors.black.withOpacity(0.7),
+                        ],
+                      ),
+                    ),
                   ),
-                  // Content
-                  Align(
-                    alignment: Alignment.bottomCenter,
+                  SafeArea(
                     child: Padding(
-                      padding: const EdgeInsets.all(20.0),
+                      padding: EdgeInsets.all(20),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          // Title
                           Container(
-                            padding: const EdgeInsets.all(16.0),
+                            padding: EdgeInsets.all(20),
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white.withOpacity(0.9),
+                              borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black26,
-                                  blurRadius: 5,
-                                  offset: Offset(0, 3),
+                                  color: Colors.black.withOpacity(0.1),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 5),
                                 ),
                               ],
                             ),
@@ -97,75 +97,70 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               children: [
                                 Text(
                                   onboardingData[index]['title']!,
-                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 20,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
+                                    color: Colors.blue[900],
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
-                                SizedBox(height: 10),
+                                SizedBox(height: 16),
                                 Text(
                                   onboardingData[index]['subtitle']!,
-                                  textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors.black87,
+                                    fontSize: 16,
+                                    color: Colors.grey[800],
                                     height: 1.5,
                                   ),
+                                  textAlign: TextAlign.center,
                                 ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 20),
-                          // Page Indicator
+                          SizedBox(height: 30),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: List.generate(
                               onboardingData.length,
-                              (dotIndex) => AnimatedContainer(
+                              (i) => AnimatedContainer(
                                 duration: Duration(milliseconds: 300),
                                 margin: EdgeInsets.symmetric(horizontal: 5),
-                                width: dotIndex == _currentPage ? 12 : 8,
-                                height: dotIndex == _currentPage ? 12 : 8,
+                                width: i == _currentPage ? 24 : 8,
+                                height: 8,
                                 decoration: BoxDecoration(
-                                  color: dotIndex == _currentPage
+                                  color: i == _currentPage
                                       ? Colors.white
-                                      : Colors.white54,
-                                  shape: BoxShape.circle,
+                                      : Colors.white.withOpacity(0.5),
+                                  borderRadius: BorderRadius.circular(4),
                                 ),
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
-                          // Button "Next" untuk halaman selain terakhir
-                          if (index != onboardingData.length - 1)
-                            ElevatedButton(
+                          SizedBox(height: 30),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
                               onPressed: _goToNextPage,
                               style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 15),
+                                backgroundColor: Colors.blue[800],
+                                padding: EdgeInsets.symmetric(vertical: 16),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                elevation: 3,
+                              ),
+                              child: Text(
+                                _currentPage == onboardingData.length - 1
+                                    ? 'Get Started'
+                                    : 'Next',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.white,
                                 ),
                               ),
-                              child: Text('Next'),
                             ),
-                          // Button "Get Started" untuk halaman terakhir
-                          if (index == onboardingData.length - 1)
-                            ElevatedButton(
-                              onPressed: () {
-                                Navigator.pushReplacementNamed(context,
-                                    '/login'); // Navigasi ke halaman utama
-                              },
-                              style: ElevatedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 40, vertical: 15),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                              child: Text('Get Started'),
-                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -174,21 +169,27 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               );
             },
           ),
-          // Skip Button
-          Positioned(
-            top: 50,
-            right: 20,
-            child: TextButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(
-                    context, '/home'); // Navigasi langsung ke halaman utama
-              },
-              child: Text(
-                'Skip',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+          SafeArea(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  TextButton(
+                    onPressed: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                    ),
+                    child: Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
