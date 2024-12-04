@@ -7,8 +7,12 @@ import 'views/welcome_screen.dart';
 import 'views/onboarding_screen.dart';
 
 void main() {
+  // Pastikan binding framework Flutter sudah diinisialisasi
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Memasukkan AuthController ke dalam dependency GetX
   Get.put(AuthController());
+
   runApp(MyApp());
 }
 
@@ -18,13 +22,38 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Katalis App',
-      theme: ThemeData(primarySwatch: Colors.blue),
+
+      // Tema aplikasi
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white, // Warna dasar latar belakang
+      ),
+
+      // Rute awal aplikasi
       initialRoute: '/welcome',
+
+      // Definisi rute GetX
       getPages: [
-        GetPage(name: '/home', page: () => HomeScreen()),
-        GetPage(name: '/login', page: () => LoginScreen()),
-        GetPage(name: '/onboarding', page: () => OnboardingScreen()),
-        GetPage(name: '/welcome', page: () => WelcomeScreen()),
+        GetPage(
+          name: '/home',
+          page: () => HomeScreen(),
+          transition: Transition.fadeIn, // Efek transisi antara halaman
+        ),
+        GetPage(
+          name: '/login',
+          page: () => LoginScreen(),
+          transition: Transition.rightToLeft,
+        ),
+        GetPage(
+          name: '/onboarding',
+          page: () => OnboardingScreen(),
+          transition: Transition.zoom,
+        ),
+        GetPage(
+          name: '/welcome',
+          page: () => WelcomeScreen(),
+          transition: Transition.downToUp,
+        ),
       ],
     );
   }

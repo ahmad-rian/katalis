@@ -11,10 +11,11 @@ class MemberController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin']);
+        // Middleware applied only to certain routes
+        $this->middleware(['auth', 'role:admin'])->except(['index', 'search', 'view']);
     }
 
-    public function index()
+    public function view()
     {
         try {
             $members = Member::latest()->paginate(10);
@@ -25,16 +26,48 @@ class MemberController extends Controller
         }
     }
 
-    public function create()
+    /**
+     * List all members (API response in JSON format).
+     */
+    public function index(Request $request)
     {
         try {
-            return view('members.create');
+            $members = Member::query();
+
+            // Apply search filter if `nim` is provided
+            if ($request->has('nim')) {
+                $members->where('nim', 'like', '%' . $request->query('nim') . '%');
+            }
+
+            return response()->json($members->latest()->get(), 200);
         } catch (\Exception $e) {
-            Log::error('Error in member create: ' . $e->getMessage());
-            return back()->with('error', 'Unable to load create form.');
+            Log::error('Error in member index: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to fetch members'], 500);
         }
     }
 
+    /**
+     * Search members by NIM or Name.
+     */
+    public function search(Request $request)
+    {
+        try {
+            $query = $request->query('nim');
+
+            $members = Member::where('nim', 'like', "%$query%")
+                ->orWhere('name', 'like', "%$query%")
+                ->get();
+
+            return response()->json($members, 200);
+        } catch (\Exception $e) {
+            Log::error('Error in member search: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to search members'], 500);
+        }
+    }
+
+    /**
+     * Store a new member (not typically used for API).
+     */
     public function store(Request $request)
     {
         try {
@@ -44,7 +77,7 @@ class MemberController extends Controller
                 'batch_year' => 'required|integer|min:2000|max:' . (date('Y')),
                 'faculty' => 'required|string|max:255',
                 'study_program' => 'required|string|max:255',
-                'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi file gambar
+                'profile_image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
             ]);
 
             if ($request->hasFile('profile_image')) {
@@ -53,12 +86,10 @@ class MemberController extends Controller
 
             Member::create($validated);
 
-            return redirect()->route('members.index')
-                ->with('success', 'Member created successfully.');
+            return response()->json(['success' => 'Member created successfully.'], 201);
         } catch (\Exception $e) {
             Log::error('Error creating member: ' . $e->getMessage());
-            return back()->withInput()
-                ->with('error', 'Failed to create member.');
+            return response()->json(['error' => 'Failed to create member.'], 500);
         }
     }
 
@@ -124,6 +155,39 @@ class MemberController extends Controller
         } catch (\Exception $e) {
             Log::error('Error deleting member: ' . $e->getMessage());
             return back()->with('error', 'Failed to delete member.');
+        }
+    }
+
+    public function apiIndex()
+    {
+        try {
+            $members = Member::latest()->get();
+            return response()->json([
+                'data' => $members,
+                'message' => 'Success'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to fetch members'
+            ], 500);
+        }
+    }
+
+    public function apiSearch(Request $request)
+    {
+        try {
+            $query = $request->query('nim');
+            $members = Member::where('nim', 'like', "%$query%")
+                ->orWhere('name', 'like', "%$query%")
+                ->get();
+            return response()->json([
+                'data' => $members,
+                'message' => 'Success'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Failed to search members'
+            ], 500);
         }
     }
 }

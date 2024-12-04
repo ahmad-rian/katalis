@@ -21,3 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('auth/google', [AuthController::class, 'googleSignIn']);
 Route::get('/members', [MemberController::class, 'index']);
+Route::get('/members/search', [MemberController::class, 'search']);
