@@ -15,12 +15,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Katalis App',
       theme: ThemeData(primarySwatch: Colors.blue),
-      initialRoute: '/welcome',
+      initialRoute:
+          '/welcome', // Ganti dengan '/onboarding' jika onboarding ingin ditampilkan dulu
       routes: {
-        '/home': (context) => HomeScreen(),
+        '/home': (context) => HomeScreen(), // Beranda setelah login
         '/login': (context) => LoginScreen(),
-        '/onboarding': (context) => OnboardingScreen(),
-        '/welcome': (context) => WelcomeScreen(),
+        '/onboarding': (context) => OnboardingScreen(), // Halaman onboarding
+        '/welcome': (context) =>
+            WelcomeScreen(), // Halaman splash screen atau welcome screen
       },
     );
   }

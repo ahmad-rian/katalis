@@ -12,6 +12,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
+  static List<String> _appBarTitles = [
+    'Beranda',
+    'Pencarian NIM',
+    'Pengumuman',
+    'Profil',
+  ];
+
   static List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     SearchNimPage(),
@@ -19,7 +26,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ProfilePage(),
   ];
 
-  // Fungsi untuk menangani perubahan index di BottomNavigationBar
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -30,8 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Beranda"),
-        backgroundColor: Colors.purple, // Menggunakan warna ungu
+        title: Text(
+          _appBarTitles[_selectedIndex],
+          style: TextStyle(
+            color: Colors.white, // Warna huruf putih
+            fontWeight: FontWeight.bold, // (Opsional) Menambahkan efek tebal
+          ),
+        ),
+        backgroundColor: Colors.blue[800],
         actions: [
           IconButton(
             icon: Icon(Icons.notifications_none, color: Colors.white),
@@ -45,10 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        backgroundColor: Colors.white, // Menggunakan latar belakang putih
-        selectedItemColor: Colors.purple, // Warna item yang dipilih
-        unselectedItemColor: Colors.grey, // Warna item yang tidak dipilih
-        elevation: 5, // Menambahkan efek bayangan pada BottomNavigationBar
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.blue[800],
+        unselectedItemColor: Colors.grey,
+        elevation: 5,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -64,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profile',
+            label: 'Profil',
           ),
         ],
       ),
