@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+
+    <meta name="google-signin-client_id"
+        content="838898865124-ifr1pssrag31a6tfu0sest5lh2polm6v.apps.googleusercontent.com">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->

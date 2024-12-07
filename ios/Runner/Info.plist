@@ -35,6 +35,14 @@
    </array>
    <key>GIDClientID</key>
    <string>838898865124-ifr1pssrag31a6tfu0sest5lh2polm6v.apps.googleusercontent.com</string>
+   <!-- Tambahkan konfigurasi ini -->
+   <key>LSApplicationQueriesSchemes</key>
+   <array>
+       <string>https</string>
+       <string>http</string>
+       <string>googlechrome</string>
+       <string>googlechromes</string>
+   </array>
    <key>LSRequiresIPhoneOS</key>
    <true/>
    <key>UILaunchStoryboardName</key>

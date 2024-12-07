@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import '../services/auth_service.dart';
 import '../models/user_model.dart';
+import 'package:flutter/material.dart';
 
 class AuthController extends GetxController {
   static AuthController get to => Get.find();
@@ -17,7 +18,18 @@ class AuthController extends GetxController {
         user.value = result['user'];
         Get.offAllNamed('/home');
       } else {
-        Get.snackbar('Error', result['message']);
+        Get.snackbar(
+          'Error',
+          result['message'] ?? 'Authentication failed',
+          snackPosition: SnackPosition.BOTTOM,
+          duration: const Duration(seconds: 3),
+          maxWidth: Get.width * 0.9,
+          backgroundColor: Colors.red.withOpacity(0.8),
+          colorText: Colors.white,
+          borderRadius: 8,
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        );
       }
     } finally {
       isLoading.value = false;

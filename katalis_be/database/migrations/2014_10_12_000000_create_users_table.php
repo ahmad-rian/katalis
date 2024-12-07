@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
@@ -16,17 +13,20 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->string('google_id')->nullable();
+            $table->string('password')->nullable(); // Buat nullable karena user Google mungkin tidak punya password
+            $table->string('google_id')->nullable()->unique(); // Tambahkan unique
             $table->string('avatar')->nullable();
+            $table->string('provider')->nullable(); // Tambahkan provider (google, email, dll)
+            $table->string('provider_token')->nullable(); // Untuk menyimpan access token
+            $table->timestamp('last_login_at')->nullable(); // Track last login
             $table->rememberToken();
             $table->timestamps();
+
+            // Tambahkan index untuk pencarian yang lebih cepat
+            $table->index(['email', 'google_id']);
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');

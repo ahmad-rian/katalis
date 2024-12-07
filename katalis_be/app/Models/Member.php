@@ -18,6 +18,7 @@ class Member extends Model
         'study_program',
         'profile_image', // Tambahkan kolom untuk menyimpan path gambar
     ];
+    protected $appends = ['profile_image_url'];
 
     // Casts untuk memastikan data batch_year selalu integer
     protected $casts = [

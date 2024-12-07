@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:katalis/services/post_service.dart';
 import 'package:katalis/views/nim/nimfinder_screen.dart';
 import 'controllers/auth_controller.dart';
 import 'controllers/member_controller.dart';
@@ -14,6 +15,7 @@ void main() async {
   await GetStorage.init();
   Get.put(AuthController(), permanent: true);
   Get.put(MemberController(), permanent: true);
+  Get.put(PostService(), permanent: true);
   runApp(const MyApp());
 }
 

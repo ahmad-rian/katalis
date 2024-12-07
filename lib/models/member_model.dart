@@ -19,11 +19,11 @@ class Member {
 
   factory Member.fromJson(Map<String, dynamic> json) {
     return Member(
-      nim: json['nim'],
-      name: json['name'],
-      batchYear: json['batch_year'],
-      faculty: json['faculty'],
-      studyProgram: json['study_program'],
+      nim: json['nim'] ?? '',
+      name: json['name'] ?? '',
+      batchYear: json['batch_year'] ?? 0,
+      faculty: json['faculty'] ?? '',
+      studyProgram: json['study_program'] ?? '',
       profileImage: json['profile_image'],
       profileImageUrl: json['profile_image_url'],
     );

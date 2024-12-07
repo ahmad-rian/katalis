@@ -11,7 +11,8 @@ class MemberController extends Controller
 {
     public function __construct()
     {
-        $this->middleware(['auth', 'role:admin'])->except(['indexApi', 'search']);
+        // Middleware auth dan role:admin hanya untuk metode tertentu
+        $this->middleware(['auth', 'role:admin'])->only(['create', 'store', 'edit', 'update', 'destroy']);
     }
 
     public function index()
@@ -22,31 +23,49 @@ class MemberController extends Controller
 
     public function indexApi(Request $request)
     {
-        $members = Member::query();
+        try {
+            $members = Member::query();
 
-        if ($request->has('nim')) {
-            $members->where('nim', 'like', '%' . $request->query('nim') . '%');
+            if ($request->has('nim')) {
+                $members->where('nim', 'like', '%' . $request->query('nim') . '%');
+            }
+
+            $members = $members->latest()->get();
+
+            return response()->json([
+                'status' => true,
+                'data' => $members,
+                'message' => 'Members retrieved successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error retrieving members: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Failed to retrieve members'
+            ], 500);
         }
-
-        $members = $members->latest()->get();
-
-        return response()->json([
-            'data' => $members,
-            'message' => 'Success'
-        ]);
     }
 
     public function search(Request $request)
     {
-        $query = $request->query('nim');
-        $members = Member::where('nim', 'like', "%$query%")
-            ->orWhere('name', 'like', "%$query%")
-            ->get();
+        try {
+            $query = $request->query('query');
+            $members = Member::where('nim', 'like', "%$query%")
+                ->orWhere('name', 'like', "%$query%")
+                ->get();
 
-        return response()->json([
-            'data' => $members,
-            'message' => 'Success'
-        ]);
+            return response()->json([
+                'status' => true,
+                'data' => $members,
+                'message' => 'Search successful'
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error searching members: ' . $e->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => 'Search failed'
+            ], 500);
+        }
     }
 
     public function create()
