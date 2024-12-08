@@ -251,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   _buildNavItem(
                     icon: Icons.notifications_outlined,
                     selectedIcon: Icons.notifications,
-                    label: 'Pengumuman',
+                    label: 'Announcement',
                     index: 2,
                   ),
                   _buildNavItem(

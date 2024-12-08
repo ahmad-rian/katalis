@@ -1,128 +1,206 @@
+// lib/pages/announcement_page.dart
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:katalis/models/beasiswa_model.dart';
+import 'package:katalis/models/event_model.dart';
+import 'package:katalis/controllers/beasiswa_controller.dart'; // Controller for Beasiswa
+import 'package:katalis/controllers/event_controller.dart'; // Controller for Event
 
-class AnnouncementPage extends StatefulWidget {
-  @override
-  _AnnouncementPageState createState() => _AnnouncementPageState();
-}
-
-class _AnnouncementPageState extends State<AnnouncementPage> {
-  int selectedCategory = 0;
-
-  final streetData = [
-    {'title': 'Street Location 1', 'subtitle': 'Location 1 Description'},
-    {'title': 'Street Location 2', 'subtitle': 'Location 2 Description'},
-    {'title': 'Street Location 3', 'subtitle': 'Location 3 Description'},
-  ];
-
-  final naturalData = [
-    {'title': 'Natural Location 1', 'subtitle': 'Location 1 Description'},
-    {'title': 'Natural Location 2', 'subtitle': 'Location 2 Description'},
-    {'title': 'Natural Location 3', 'subtitle': 'Location 3 Description'},
-  ];
+class AnnouncementPage extends StatelessWidget {
+  final BeasiswaController _beasiswaController =
+      Get.put(BeasiswaController()); // Beasiswa Controller
+  final EventController _eventController =
+      Get.put(EventController()); // Event Controller
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Announcements', style: TextStyle(color: Colors.white)),
-        backgroundColor: Colors.blue[800],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Beasiswa & Event'),
+          bottom: const TabBar(
+            tabs: [
+              Tab(text: 'Beasiswa'),
+              Tab(text: 'Event'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            // Beasiswa Tab
+            Obx(() => _buildBeasiswaTab()),
+
+            // Event Tab
+            Obx(() => _buildEventTab()),
+          ],
+        ),
       ),
-      body: Column(
-        children: [
-          // Custom Tab Bar
-          Container(
-            height: 60,
-            child: Stack(
+    );
+  }
+
+  // Builds Beasiswa Tab
+  Widget _buildBeasiswaTab() {
+    if (_beasiswaController.isLoading.value) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_beasiswaController.beasiswaList.isEmpty) {
+      return const Center(child: Text('Tidak ada data beasiswa.'));
+    }
+
+    return ListView.builder(
+      itemCount: _beasiswaController.beasiswaList.length,
+      itemBuilder: (context, index) {
+        final beasiswa = _beasiswaController.beasiswaList[index];
+        return _buildBeasiswaCard(context, beasiswa);
+      },
+    );
+  }
+
+  // Builds Event Tab
+  Widget _buildEventTab() {
+    if (_eventController.isLoading.value) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_eventController.events.isEmpty) {
+      return const Center(child: Text('Tidak ada data event.'));
+    }
+
+    return ListView.builder(
+      itemCount: _eventController.events.length,
+      itemBuilder: (context, index) {
+        final event = _eventController.events[index];
+        return _buildEventCard(context, event);
+      },
+    );
+  }
+
+  // Builds Beasiswa Card
+  // Inside the widget where _buildBeasiswaCard is called (e.g., a StatefulWidget or StatelessWidget)
+  Widget _buildBeasiswaCard(BuildContext context, BeasiswaModel beasiswa) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(10),
+        title: Text(
+          beasiswa.namaBeasiswa,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          beasiswa.deskripsi,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 14),
+        ),
+        trailing: beasiswa.gambar != null
+            ? Image.network(
+                beasiswa.gambar!,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              )
+            : null,
+        onTap: () {
+          _showBeasiswaDetail(context, beasiswa); // Now context is available
+        },
+      ),
+    );
+  }
+
+  // Builds Event Card
+  // Inside the AnnouncementPage widget
+  Widget _buildEventCard(BuildContext context, EventModel event) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(10),
+        title: Text(
+          event.namaEvent,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        subtitle: Text(
+          event.deskripsi,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(fontSize: 14),
+        ),
+        trailing: event.gambar != null
+            ? Image.network(
+                event.gambar!,
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+              )
+            : null,
+        onTap: () {
+          _showEventDetail(context, event); // Now context is available
+        },
+      ),
+    );
+  }
+
+  // Show Beasiswa Detail
+  void _showBeasiswaDetail(BuildContext context, BeasiswaModel beasiswa) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(beasiswa.namaBeasiswa),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomPaint(
-                  size: Size(MediaQuery.of(context).size.width, 60),
-                  painter: TabBarPainter(),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    _buildCategoryButton('Street', 0),
-                    _buildCategoryButton('Natural', 1),
-                  ],
+                if (beasiswa.gambar != null) Image.network(beasiswa.gambar!),
+                const SizedBox(height: 10),
+                Text(
+                  beasiswa.deskripsi,
+                  style: const TextStyle(fontSize: 16),
                 ),
               ],
             ),
           ),
-          // List data based on category
-          Expanded(
-            child: ListView.builder(
-              itemCount: selectedCategory == 0
-                  ? streetData.length
-                  : naturalData.length,
-              itemBuilder: (context, index) {
-                final item = selectedCategory == 0
-                    ? streetData[index]
-                    : naturalData[index];
-                return Card(
-                  margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: ListTile(
-                    leading: Icon(Icons.place, color: Colors.blue),
-                    title: Text(item['title'] ?? ''),
-                    subtitle: Text(item['subtitle'] ?? ''),
-                    trailing: Icon(Icons.arrow_forward),
-                    onTap: () {
-                      print('${item['title']} selected');
-                    },
-                  ),
-                );
-              },
+          actions: [
+            TextButton(
+              child: const Text('Tutup'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // Show Event Detail
+  void _showEventDetail(BuildContext context, EventModel event) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(event.namaEvent),
+          content: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (event.gambar != null) Image.network(event.gambar!),
+                const SizedBox(height: 10),
+                Text(
+                  event.deskripsi,
+                  style: const TextStyle(fontSize: 16),
+                ),
+              ],
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryButton(String text, int index) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          selectedCategory = index;
-        });
+          actions: [
+            TextButton(
+              child: const Text('Tutup'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        );
       },
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        decoration: BoxDecoration(
-          color: selectedCategory == index ? Colors.white : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: selectedCategory == index ? Colors.blue[800] : Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ),
     );
-  }
-}
-
-class TabBarPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.blue[800]!
-      ..style = PaintingStyle.fill;
-
-    final path = Path()
-      ..moveTo(0, size.height * 0.7)
-      ..quadraticBezierTo(
-          size.width * 0.5, size.height * 1.3, size.width, size.height * 0.7)
-      ..lineTo(size.width, 0)
-      ..lineTo(0, 0)
-      ..close();
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
   }
 }
